@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Word Frequency Counter</title>
+</head>
+<body>
+    <h1>Word Frequency Counter</h1>
+    <div>
+        <label for="apiUrl">API URL:</label>
+        <input type="text" id="apiUrl" value="https://api.example.com/data" />
+        <button onclick="fetchDataAndCount()">Fetch Data and Count</button>
+    </div>
+    <div>
+        <h2>Word Frequency:</h2>
+        <ul id="wordList"></ul>
+    </div>
+
+    <script>
+        async function fetchDataAndCount() {
+            const apiUrl = document.getElementById("apiUrl").value;
+
+            try {
+                // Fetch data from the external API
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+
+                // Count the word frequency
+                const wordFrequency = countWordFrequency(data);
+
+                // Display the word frequency
+                displayWordFrequency(wordFrequency);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        }
+
+        function countWordFrequency(data) {
+            // Assuming the data is an array of strings
+            const wordFrequency = {};
+
+            for (const item of data) {
+                // Split each item into words
+                const words = item.split(/\s+/);
+
+                for (const word of words) {
+                    // Convert the word to lowercase for case-insensitive counting
+                    const lowercaseWord = word.toLowerCase();
+
+                    // Increment the word's count in the frequency object
+                    if (wordFrequency[lowercaseWord]) {
+                        wordFrequency[lowercaseWord]++;
+                    } else {
+                        wordFrequency[lowercaseWord] = 1;
+                    }
+                }
+            }
+
+            return wordFrequency;
+        }
+
+        function displayWordFrequency(wordFrequency) {
+            const wordList = document.getElementById("wordList");
+
+            // Clear the previous list
+            wordList.innerHTML = "";
+
+            // Create list items for each word and its count
+            for (const word in wordFrequency) {
+                const listItem = document.createElement("li");
+                listItem.textContent = `${word}: ${wordFrequency[word]}`;
+                wordList.appendChild(listItem);
+            }
+        }
+    </script>
+</body>
+</html>
