@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>XSS Vulnerable Page</title>
+</head>
+<body>
+    <h1>Welcome to our website!</h1>
+    <p>Hello, <span id="username"></span>! We hope you enjoy your stay.</p>
+    <script>
+        // Assume this data comes from an untrusted source or is user-controlled
+        var name = "John"; // This should be replaced with user input
+
+        // Display the username on the page
+        document.getElementById("username").textContent = name;
+    </script>
+</body>
+</html>
